@@ -36,12 +36,12 @@ class Todos extends Component {
           padding: '40px 20px',
         }}
       >
-        <div style={{ display: 'flex' }}>
+        {/* <div style={{ display: 'flex' }}>
           <div
             style={{
               display: 'flex',
               fontSize: '18px',
-              width: '50%',
+              width: '100%',
             }}
           >
             <Button>
@@ -51,37 +51,36 @@ class Todos extends Component {
             </Button>
             <h2 style={{ color: 'dodgerblue' }}>Things To do</h2>
           </div>
-          <div>
-            <p>das</p>
-          </div>
-        </div>
+        </div> */}
 
-        <TodoList />
+        <TodoList todoHeaders={todoHeaders} />
         {!renderInput ? (
-          <div
-            onMouseDown={this.handleOnMouseDown}
-            onMouseUp={this.handleMouseUp}
-            style={{
-              display: 'flex',
-              color: '#ccc',
-              fontSize: '15px',
-              width: '100%',
-              marginTop: '5px',
-              opacity: touched ? 0.5 : 1,
-            }}
-          >
-            <div style={{ border: '3px  solid #91b7e8' }} />
+          activePage && activePage.todos ? (
             <div
+              onMouseDown={this.handleOnMouseDown}
+              onMouseUp={this.handleMouseUp}
               style={{
-                border: '1px solid rgba(0,0,0,0.1)',
-                padding: '7px',
+                display: 'flex',
+                color: '#ccc',
+                fontSize: '15px',
                 width: '100%',
+                marginTop: '5px',
+                opacity: touched ? 0.5 : 1,
               }}
             >
-              <p>+ Add</p>
+              <div style={{ border: '3px  solid #91b7e8' }} />
+              <div
+                style={{
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  padding: '7px',
+                  width: '100%',
+                }}
+              >
+                <p>+ Add</p>
+              </div>
+              <div style={{ border: '3px  solid #ccc' }} />
             </div>
-            <div style={{ border: '3px  solid #ccc' }} />
-          </div>
+          ) : null
         ) : (
           <div
             style={{
@@ -105,7 +104,6 @@ class Todos extends Component {
                   const val = todoText;
                   this.setState({ renderInput: false, todoText: '' }, () => {
                     const todo = new TodoModel({ todo: val });
-                    // console.log(todo, 'todo model');
                     this.props.dispatchNewTodoTask({
                       params: {
                         todo: todo,

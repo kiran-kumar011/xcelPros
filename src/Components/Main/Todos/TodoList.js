@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { IoMdArrowDropdownCircle } from 'react-icons/io';
+import { FaPlusCircle } from 'react-icons/fa';
 import Todo from './Todo';
+
 import { swapTodoColumn } from '../../../redux-utils/actions';
+import Button from '../../../UIComponents/Button';
 
 class TodoList extends Component {
   constructor(props) {
@@ -10,6 +14,7 @@ class TodoList extends Component {
       touched: false,
       draggedTask: null,
       todos: [],
+      draggbleMenu: '',
     };
   }
 
@@ -32,9 +37,11 @@ class TodoList extends Component {
 
   onDragOver = (e) => {
     e.preventDefault();
+    console.log('check');
   };
 
   onDrop = (e) => {
+    console.log('drop event', e.target);
     e.preventDefault();
     if (e.target.id) {
       const { draggedTask } = this.state;
@@ -63,21 +70,102 @@ class TodoList extends Component {
     }
   };
 
+  menuDrag = (e) => {
+    e.preventDefault();
+    console.log(e.target.innerText, 'drag element');
+  };
+
+  menuDragDrop = (e) => {
+    e.preventDefault();
+    console.log(e.target.innerText, 'drop element');
+    console.dir(e.target, 'dir');
+  };
+
+  assignWidth = (text) => {
+    console.log(text, 'assign width');
+    switch (text) {
+      case 'Things To do':
+        return '51%';
+      case 'Owner':
+        return '9%';
+      case 'Status':
+        return '15%';
+      case 'Priority':
+        return '10%';
+      case 'Due date':
+        return '8%';
+      default:
+        return;
+    }
+  };
+
   render() {
     const { touched } = this.state;
-    const { pages, pageId } = this.props;
+    const { pages, pageId, todoHeaders } = this.props;
 
     const list =
       pages && pages.length ? pages.find((item) => item.id === pageId) : {};
-    console.log(this.state.draggedTask, 'draggedTask');
 
     return (
       <div>
-        <div style={{}}>
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {todoHeaders &&
+              todoHeaders.map((itm, id) => {
+                const index = id === 0;
+                const style = {
+                  color: index ? 'dodgerblue' : 'rgba(0,0,0,0.8)',
+                  fontSize: index ? '18px' : '15px',
+                  width: index ? '48%' : '10%',
+                  display: index ? 'flex' : 'block',
+                  fontWeight: 300,
+                  textAlign: 'center',
+                  // backgroundColor: index ? '#ccc' : 'red',
+                };
+                return (
+                  <div
+                    onClick={
+                      itm.toLowerCase() === 'status'
+                        ? () => {
+                            console.log('status clicked');
+                          }
+                        : null
+                    }
+                    id={itm}
+                    draggable
+                    onDrag={this.menuDrag}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => this.menuDragDrop(e)}
+                    key={itm}
+                    style={{ ...style }}
+                  >
+                    {id === 0 && (
+                      <Button>
+                        <IoMdArrowDropdownCircle
+                          style={{ color: 'dodgerblue', fontSize: '20px' }}
+                        />
+                      </Button>
+                    )}
+                    <p>{itm}</p>
+                  </div>
+                );
+              })}
+            <div>
+              <FaPlusCircle />
+            </div>
+          </div>
           {list && list.todos && list.todos.length
             ? list.todos.map((itm, id) => {
                 return (
                   <Todo
+                    todoHeaders={todoHeaders}
                     onDragOver={this.onDragOver}
                     onDrag={this.onDrag}
                     onDrop={this.onDrop}

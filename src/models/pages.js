@@ -9,15 +9,15 @@ class Page {
         id: '95aa5bd2-a8b4-4200-a142-123db865fd29',
         todo: '1',
         dueDate: '2020-06-25T07:37:13.049Z',
-        status: '',
+        status: 'Work in progress',
         owners: [],
         priority: '',
       },
       {
         id: '95aa5bd2-a8b4-4200-a142-123db865fd39',
-        todo: 'Check',
+        todo: '2',
         dueDate: '2020-06-25T07:37:13.049Z',
-        status: '',
+        status: 'sdad',
         owners: [],
         priority: '',
       },
@@ -39,7 +39,13 @@ class Page {
       'Waiting for Review',
     ];
     this.priority = ['Urgent', 'Medium', 'Low', 'High'];
-    this.todoHeaders = ['Owner', 'Status', 'Due date', 'Priority'];
+    this.todoHeaders = [
+      'Things To do',
+      'Owner',
+      'Status',
+      'Due date',
+      'Priority',
+    ];
   }
 }
 
